@@ -1,15 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
-const adminAuth = (req, res, next) => {
-    const token = "abcd"
-    if (token === "abcd") {
-        next();
-    } else {
-        res.status(401).send({message: "Unauthorized access"});
-    }
-}
-
 const userAuth = async (req, res, next) => {
    try{
         const cookies = req.cookies;
@@ -17,7 +8,7 @@ const userAuth = async (req, res, next) => {
         if (!token) {
             return res.status(401).send({message: "Unauthorized access"});
         }
-        const decodedObject = jwt.verify(token, "secrettext");
+        const decodedObject = jwt.verify(token, process.env.JWT_SECRET);
         const { userId } = decodedObject;
         const user = await User.findOne({ _id: userId });
         if (user.length === 0) {
@@ -34,6 +25,5 @@ const userAuth = async (req, res, next) => {
 }
 
 module.exports = {
-    adminAuth,
     userAuth
 }

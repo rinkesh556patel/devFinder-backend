@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const connectDB = require("./config/database");
 var cookieParser = require('cookie-parser')
@@ -21,7 +22,7 @@ connectDB()
 .then(() => {
     console.log("Database connected successfully");
 
-    app.listen(7777, () => {
+    app.listen(process.env.PORT, () => {
         console.log("Server started successfully...");
     });
 }).catch((e) => {
